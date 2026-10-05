@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f8fc">
+    <meta name="description" content="Set your job search preferences with ApplyPilot AI.">
+    <title>Job preferences | ApplyPilot AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="ApplyPilot AI home">
+        <span class="brand-mark" aria-hidden="true"><span></span></span>
+        <span>applypilot<span class="brand-ai">.ai</span></span>
+      </a>
+      <span class="header-note"><span class="status-dot" aria-hidden="true"></span>Your next move starts here</span>
+    </header>
+
+    <main class="page-shell">
+      <section class="form-panel" aria-labelledby="page-title">
+        <div class="eyebrow"><span class="eyebrow-icon" aria-hidden="true">✳</span> YOUR JOB SEARCH, YOUR WAY</div>
+        <h1 id="page-title">Let’s find your<br class="desktop-break"> <span>kind of work.</span></h1>
+        <p class="intro">Tell us what you’re looking for. We’ll help you focus on the opportunities that feel right.</p>
+
+        <div class="progress-block" aria-label="Your preferences">
+          <div class="progress-label"><span>YOUR PREFERENCES</span><span>ABOUT 2 MIN</span></div>
+          <div class="progress-track" role="presentation"><span></span></div>
+        </div>
+
+        <form id="preferences-form" novalidate>
+          <div class="form-section">
+            <div class="section-heading">
+              <span class="section-number">01</span>
+              <div>
+                <h2>The role</h2>
+                <p>What kind of work are you after?</p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="job-title">Job title or role <span class="required-mark" aria-hidden="true">*</span></label>
+              <input id="job-title" name="jobTitle" type="text" placeholder="e.g. Product Designer" autocomplete="organization-title" required minlength="2" maxlength="80" aria-describedby="job-title-error">
+              <span class="field-error" id="job-title-error"></span>
+            </div>
+
+            <fieldset class="field">
+              <legend>Employment type <span class="required-mark" aria-hidden="true">*</span></legend>
+              <p class="field-hint">Choose all that work for you.</p>
+              <div class="choice-grid employment-choices">
+                <label class="choice-card"><input type="checkbox" name="employmentType" value="Full-time"><span class="choice-check" aria-hidden="true"></span><span>Full-time</span></label>
+                <label class="choice-card"><input type="checkbox" name="employmentType" value="Part-time"><span class="choice-check" aria-hidden="true"></span><span>Part-time</span></label>
+                <label class="choice-card"><input type="checkbox" name="employmentType" value="Contract"><span class="choice-check" aria-hidden="true"></span><span>Contract</span></label>
+                <label class="choice-card"><input type="checkbox" name="employmentType" value="Internship"><span class="choice-check" aria-hidden="true"></span><span>Internship</span></label>
+              </div>
+              <span class="field-error" id="employment-error" aria-live="polite"></span>
+            </fieldset>
+
+            <div class="field field-row">
+              <div>
+                <label for="experience">Experience level <span class="required-mark" aria-hidden="true">*</span></label>
+                <select id="experience" name="experience" required aria-describedby="experience-error">
+                  <option value="">Select a level</option>
+                  <option value="Entry level">Entry level</option>
+                  <option value="Mid-level">Mid-level</option>
+                  <option value="Senior">Senior</option>
+                  <option value="Lead / Manager">Lead / Manager</option>
+                  <option value="Executive">Executive</option>
+                </select>
+                <span class="field-error" id="experience-error"></span>
+              </div>
+              <div>
+                <label for="workplace">Work arrangement <span class="required-mark" aria-hidden="true">*</span></label>
+                <select id="workplace" name="workplace" required aria-describedby="workplace-error">
+                  <option value="">Select an arrangement</option>
+                  <option value="No preference">No preference</option>
+                  <option value="Remote">Remote</option>
+                  <option value="Hybrid">Hybrid</option>
+                  <option value="On-site">On-site</option>
+                </select>
+                <span class="field-error" id="workplace-error"></span>
+              </div>
+            </div>
+
+            <div class="field" id="location-field">
+              <label for="location">Preferred location <span class="optional-label" id="location-optional">(optional)</span></label>
+              <div class="input-with-icon">
+                <span aria-hidden="true" class="pin-icon">
+                  <svg viewBox="0 0 20 20" fill="none"><path d="M16 8.2c0 4.1-6 9.3-6 9.3S4 12.3 4 8.2a6 6 0 1 1 12 0Z" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.6"/></svg>
+                </span>
+                <input id="location" name="location" type="text" placeholder="City, region, or country" autocomplete="address-level2" maxlength="100" aria-describedby="location-hint location-error">
+              </div>
+              <span class="field-hint" id="location-hint">Remote roles can be anywhere.</span>
+              <span class="field-error" id="location-error"></span>
+            </div>
+          </div>
+
+          <div class="form-section salary-section">
+            <div class="section-heading">
+              <span class="section-number">02</span>
+              <div>
+                <h2>Your range</h2>
+                <p>Set a salary range that works for you.</p>
+              </div>
+            </div>
+            <div class="field salary-field">
+              <label>Desired annual salary <span class="optional-label">(optional)</span></label>
+              <div class="salary-inputs">
+                <label class="visually-hidden" for="salary-min">Minimum annual salary</label>
+                <div class="currency-input"><span aria-hidden="true">$</span><input id="salary-min" name="salaryMin" type="number" min="0" max="99999999" step="1000" inputmode="numeric" placeholder="Minimum" aria-describedby="salary-error"></div>
+                <span class="range-dash" aria-hidden="true">—</span>
+                <label class="visually-hidden" for="salary-max">Maximum annual salary</label>
+                <div class="currency-input"><span aria-hidden="true">$</span><input id="salary-max" name="salaryMax" type="number" min="0" max="99999999" step="1000" inputmode="numeric" placeholder="Maximum" aria-describedby="salary-error"></div>
+              </div>
+              <span class="field-hint">Leave blank if you’re flexible.</span>
+              <span class="field-error" id="salary-error"></span>
+            </div>
+          </div>
+
+          <div class="form-section skills-section">
+            <div class="section-heading">
+              <span class="section-number">03</span>
+              <div>
+                <h2>Skills to match</h2>
+                <p>What would you love to use in your next role?</p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="skill-input">Your skills <span class="optional-label">(optional)</span></label>
+              <div class="tag-input-wrap" id="tag-input-wrap">
+                <div class="skill-tags" id="skill-tags" aria-label="Added skills"></div>
+                <input id="skill-input" type="text" placeholder="Type a skill and press Enter" maxlength="40" aria-describedby="skills-hint skill-error">
+              </div>
+              <span class="field-hint" id="skills-hint">Add up to 10 skills. Press Enter or comma to add each one.</span>
+              <span class="field-error" id="skill-error" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <p><span class="lock-icon" aria-hidden="true">⌑</span> Your preferences stay yours. Update them any time.</p>
+            <button class="submit-button" type="submit">Save my preferences <span aria-hidden="true">↗</span></button>
+          </div>
+          <div class="form-feedback" id="form-feedback" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <aside class="side-panel" aria-label="How ApplyPilot helps">
+        <div class="side-orb orb-one"></div>
+        <div class="side-orb orb-two"></div>
+        <div class="side-content">
+          <div class="sparkle-art" aria-hidden="true">
+            <span class="sparkle sparkle-large">✳</span>
+            <span class="sparkle sparkle-small">✦</span>
+            <span class="sparkle sparkle-tiny">✳</span>
+            <span class="sparkle-dot"></span>
+          </div>
+          <span class="side-kicker">A BETTER WAY TO FIND WORK</span>
+          <h2>Less scrolling.<br>More <em>“this is it.”</em></h2>
+          <p>Your preferences help us surface roles that fit your life, goals, and the way you want to work.</p>
+          <div class="side-divider"></div>
+          <div class="benefit-list">
+            <div class="benefit"><span class="benefit-icon" aria-hidden="true">⌕</span><span>Opportunities that fit your goals</span></div>
+            <div class="benefit"><span class="benefit-icon" aria-hidden="true">✳</span><span>Skills matched to real job needs</span></div>
+            <div class="benefit"><span class="benefit-icon" aria-hidden="true">↗</span><span>A search that moves at your pace</span></div>
+          </div>
+        </div>
+        <div class="side-bottom"><span class="bottom-sparkle" aria-hidden="true">✳</span> MADE FOR YOUR NEXT CHAPTER</div>
+      </aside>
+    </main>
+    <footer class="site-footer"><span>© 2026 ApplyPilot AI</span><span>Built around <span class="heart" aria-label="love">♥</span> your next step</span></footer>
+  </body>
+</html>
