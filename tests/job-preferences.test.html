@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Job preferences automated tests</title>
+    <style>
+      body { max-width: 760px; margin: 40px auto; padding: 0 20px; color: #24243a; font: 16px/1.5 system-ui, sans-serif; }
+      h1 { font-size: 24px; }
+      #summary { font-weight: 700; }
+      #results { padding-left: 22px; }
+      .pass { color: #176c46; }
+      .fail { color: #b3263e; }
+      iframe { position: absolute; left: -10000px; width: 1px; height: 1px; }
+    </style>
+    <script src="../job-preferences.js" defer></script>
+    <script src="./job-preferences.test.js" defer></script>
+  </head>
+  <body>
+    <h1>Job preferences automated tests</h1>
+    <p id="summary" role="status">Running tests…</p>
+    <ol id="results"></ol>
+    <iframe id="form-fixture" title="Job preferences form test fixture" src="../index.html"></iframe>
+  </body>
+</html>

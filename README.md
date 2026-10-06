@@ -1,6 +1,14 @@
 # ApplyPilot AI
 
-ApplyPilot AI is an AI-powered job application assistant designed to help job seekers better understand job requirements, identify key skills, and prepare stronger applications. The project aims to support users by analyzing job descriptions and highlighting the gaps between their current experience and the role they are targeting.
+ApplyPilot AI is an AI-powered job application assistant designed to help job seekers better understand job requirements, identify key skills, and prepare stronger applications.
+
+## Job preferences form
+
+Open `index.html` in a browser to use the responsive job preferences form. It collects a target role, employment types, experience level, work arrangement, required location, one optional minimum salary, and skills. A minimum salary must be greater than zero when entered. Preferences are saved locally in the browser and restored when the form is reopened; they are not sent to a server.
+
+## Automated tests
+
+Open `tests/job-preferences.test.html` in a modern browser to run the dependency-free automated validation and form-submission integration tests. The integration test submits the real form with required fields empty and verifies that missing or whitespace-only locations produce accessible field errors without saving, then confirms a valid location saves successfully. Each test result is reported on the page.
 
 ## Project Overview
 
@@ -30,4 +38,4 @@ This capstone project focuses on creating a user-friendly application that helps
 
 ## Project Status
 
-This project is currently in the early planning and setup phase of the Frontend AI Engineering capstone. Development will proceed incrementally, with foundational functionality introduced as the application evolves.
+The project is under active development, with foundational functionality introduced incrementally.
