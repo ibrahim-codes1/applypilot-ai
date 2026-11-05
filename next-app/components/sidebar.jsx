@@ -17,13 +17,13 @@ export function Sidebar() {
       <div className="mt-4"><NavItems onDark /></div>
       <div className="mt-auto rounded-2xl border border-white/10 bg-white/5 p-5">
         <div className="mb-3 flex size-9 items-center justify-center rounded-xl bg-indigo-400/20 text-indigo-200"><Icon name="shield" size={20}/></div>
-        <p className="text-sm font-semibold text-white">Foundation milestone</p>
-        <p className="mt-1.5 text-xs leading-5 text-slate-400">Routes are ready. AI integration is planned for the next phase.</p>
-        <span className="mt-4 inline-flex rounded-full bg-indigo-400/15 px-3 py-1 text-[11px] font-semibold text-indigo-200">FE-05 · Skeleton</span>
+        <p className="text-sm font-semibold text-white">Streaming chat milestone</p>
+        <p className="mt-1.5 text-xs leading-5 text-slate-400">Career coach chat is now an FE-06 feature. Job matching and resume integrations are still planned.</p>
+        <span className="mt-4 inline-flex rounded-full bg-indigo-400/15 px-3 py-1 text-[11px] font-semibold text-indigo-200">FE-06 · Chat</span>
       </div>
     </aside>
     <div className="border-b border-slate-200 bg-white px-5 py-4 lg:hidden">
-      <div className="flex items-center justify-between"><Brand /><span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">FE-05</span></div>
+      <div className="flex items-center justify-between"><Brand /><span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">FE-06</span></div>
       <details className="group mt-4 rounded-xl border border-slate-200 bg-slate-50">
         <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm font-semibold text-slate-700"><Icon name="menu" size={18}/> Browse pages</summary>
         <div className="border-t border-slate-200 p-2"><NavItems /></div>

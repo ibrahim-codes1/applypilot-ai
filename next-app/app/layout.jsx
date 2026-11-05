@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <div className="min-w-0 flex-1">
         <Topbar />
         <main id="main-content" className="mx-auto w-full max-w-[1280px] px-5 py-8 sm:px-8 sm:py-10 lg:px-11 lg:py-12">{children}</main>
-        <footer className="mx-auto max-w-[1280px] px-5 pb-8 text-xs text-slate-400 sm:px-8 lg:px-11">ApplyPilot AI · FE-05 skeleton · Demo content only · No user data collected</footer>
+        <footer className="mx-auto max-w-[1280px] px-5 pb-8 text-xs text-slate-400 sm:px-8 lg:px-11">ApplyPilot AI · FE-06 streaming chat · No live job search · Chat saved in this browser only</footer>
       </div>
     </div>
   </body></html>;
