@@ -1,3 +1,5 @@
+> **FE-06 update:** This repository now contains a streaming AI career-coach feature at `/chat`. See [FE06_README.md](FE06_README.md) for API key configuration, stop/scroll checks, and reviewer links. The FE-05 notes below describe the earlier foundation milestone; the job matching and resume features remain placeholders.
+
 # ApplyPilot AI — FE-05 Capstone Skeleton
 
 A **Next.js App Router** foundation for the ongoing FlyRank Frontend AI Engineering capstone. It does **not** ship job matching or resume parsing yet. This deliverable is intended to be added into the existing ApplyPilot AI GitHub repository under a `next-app/` directory, preserving earlier experimental branches and files.
