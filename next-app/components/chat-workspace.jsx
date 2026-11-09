@@ -1,4 +1,5 @@
 'use client';
+import JobMatchToolCard from '@/components/job-match-tool-card';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useChat } from '@ai-sdk/react';
@@ -18,9 +19,14 @@ function messageText(message) {
   return (message.parts || []).filter(part => part.type === 'text').map(part => part.text).join('');
 }
 
+
 function ChatBubble({ message, isStreaming }) {
   const mine = message.role === 'user';
   const text = messageText(message);
+
+  const jobMatchParts = (message.parts || []).filter(
+    (part) => part.type === 'tool-analyzeJobMatch'
+  );
   return <article className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
     <div className={`min-w-0 max-w-[90%] rounded-2xl px-4 py-3 shadow-sm sm:max-w-[82%] ${mine ? 'rounded-br-md bg-indigo-600 text-white' : 'rounded-bl-md border border-slate-200 bg-white text-slate-800'}`}>
       <p className={`mb-1.5 text-[11px] font-bold uppercase tracking-wide ${mine ? 'text-indigo-100' : 'text-indigo-600'}`}>{mine ? 'You' : 'ApplyPilot AI'}</p>
@@ -34,7 +40,13 @@ function ChatBubble({ message, isStreaming }) {
     )}
     </div>
 
-      {!mine && isStreaming && <span aria-hidden="true" className="ml-1 inline-block h-3 w-1 animate-pulse rounded bg-indigo-500 align-middle" />}
+
+    {!mine && jobMatchParts.map((part, index) => (
+    <JobMatchToolCard
+    key={part.toolCallId || `job-match-${index}`}
+    part={part}
+    />
+    ))}
     </div>
   </article>;
 }
