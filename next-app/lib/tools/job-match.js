@@ -43,14 +43,15 @@ export const jobMatchTool = tool({
       (matchedSkills.length / uniqueRequirements.length) * 100
     );
 
-    return {
-      jobTitle: jobTitle || "Job Match",
-      score,
-      matchedSkills,
-      missingSkills,
-      matchedCount: matchedSkills.length,
-      totalRequirements: uniqueRequirements.length,
-      method: "Exact skill-name matching, case-insensitive",
-    };
+  return {
+  jobTitle: jobTitle || "Job Match",
+  score,
+  matchedSkills,
+  missingSkills,
+  matchedCount: matchedSkills.length,
+  totalRequirements: uniqueRequirements.length,
+  method: "Exact skill-name matching, case-insensitive",
+  };
+
   },
 });
