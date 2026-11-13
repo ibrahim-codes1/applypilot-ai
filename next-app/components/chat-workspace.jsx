@@ -1,4 +1,5 @@
 'use client';
+import JobMatchToolCard from '@/components/job-match-tool-card';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useChat } from '@ai-sdk/react';
@@ -8,9 +9,11 @@ import { isNearBottom } from '@/lib/chat-scroll.mjs';
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' });
 const STORAGE_KEY = 'applypilot-fe06-chat-v1';
+
 const suggestions = [
   'Help me prepare for a junior frontend interview.',
   'How can I improve a Flutter project bullet point on my resume?',
+  'My skills are Flutter, Dart, and Firebase. A Junior Flutter Developer job requires Flutter, Dart, REST APIs, and Widget Testing. Analyze my job match.',
   'Create a two-week internship application plan.',
 ];
 
@@ -18,9 +21,14 @@ function messageText(message) {
   return (message.parts || []).filter(part => part.type === 'text').map(part => part.text).join('');
 }
 
+
 function ChatBubble({ message, isStreaming }) {
   const mine = message.role === 'user';
   const text = messageText(message);
+
+  const jobMatchParts = (message.parts || []).filter(
+    (part) => part.type === 'tool-analyzeJobMatch'
+  );
   return <article className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
     <div className={`min-w-0 max-w-[90%] rounded-2xl px-4 py-3 shadow-sm sm:max-w-[82%] ${mine ? 'rounded-br-md bg-indigo-600 text-white' : 'rounded-bl-md border border-slate-200 bg-white text-slate-800'}`}>
       <p className={`mb-1.5 text-[11px] font-bold uppercase tracking-wide ${mine ? 'text-indigo-100' : 'text-indigo-600'}`}>{mine ? 'You' : 'ApplyPilot AI'}</p>
@@ -34,18 +42,45 @@ function ChatBubble({ message, isStreaming }) {
     )}
     </div>
 
-      {!mine && isStreaming && <span aria-hidden="true" className="ml-1 inline-block h-3 w-1 animate-pulse rounded bg-indigo-500 align-middle" />}
+
+    {!mine && jobMatchParts.map((part, index) => (
+    <JobMatchToolCard
+    key={part.toolCallId || `job-match-${index}`}
+    part={part}
+    />
+    ))}
     </div>
   </article>;
 }
 
+
 function ThinkingBubble() {
-  return <div className="flex justify-start"><div className="rounded-2xl rounded-bl-md border border-slate-200 bg-white px-5 py-4 shadow-sm" role="status" aria-label="AI is thinking">
-    <p className="mb-2 text-[11px] font-bold uppercase tracking-wide text-indigo-600">ApplyPilot AI</p>
-    <span className="flex items-center gap-1.5 text-sm text-slate-500">Thinking
-      {[0, 1, 2].map(n => <span key={n} className="h-1.5 w-1.5 animate-pulse rounded-full bg-indigo-500" style={{ animationDelay: `${n * 140}ms` }} />)}
-    </span>
-  </div></div>;
+  return (
+    <div className="flex justify-start">
+      <div
+        role="status"
+        aria-label="ApplyPilot AI is preparing a response"
+        className="w-full max-w-[90%] rounded-2xl rounded-bl-md border border-slate-200 bg-white px-4 py-4 shadow-sm sm:max-w-[82%]"
+      >
+        <p className="mb-4 text-[11px] font-bold uppercase tracking-wide text-indigo-600">
+          ApplyPilot AI
+        </p>
+
+        <div
+          aria-hidden="true"
+          className="space-y-3 motion-safe:animate-pulse"
+        >
+          <div className="h-3 w-[90%] rounded-md bg-slate-200" />
+          <div className="h-3 w-[75%] rounded-md bg-slate-200" />
+          <div className="h-3 w-[50%] rounded-md bg-slate-200" />
+        </div>
+
+        <p className="mt-4 text-xs text-slate-500">
+          Preparing your response...
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export function ChatWorkspace({ providerStatus }) {
@@ -56,8 +91,9 @@ export function ChatWorkspace({ providerStatus }) {
   const scrollRef = useRef(null);
   const stickToBottomRef = useRef(true);
   const textareaRef = useRef(null);
+  const retryInFlightRef = useRef(false);
 
-  const { messages, setMessages, sendMessage, status, stop, error } = useChat({
+  const { messages, setMessages, sendMessage, status, stop, error, regenerate } = useChat({
     transport: chatTransport,
     onError() { setNotice('Request failed. Check the AI key, provider credits, or network and try again.'); },
   });
@@ -121,6 +157,23 @@ export function ChatWorkspace({ providerStatus }) {
     textareaRef.current?.focus();
   };
 
+
+const retryFailedResponse = async () => {
+  if (retryInFlightRef.current || busy || !error) return;
+
+  retryInFlightRef.current = true;
+  setNotice('');
+  stickToBottomRef.current = true;
+
+  try {
+    await regenerate();
+  } catch {
+    setNotice('Retry failed. Please check your connection and try again.');
+  } finally {
+    retryInFlightRef.current = false;
+  }
+  };
+
   const clearConversation = () => {
     if (busy) return;
     setMessages([]);
@@ -155,10 +208,45 @@ export function ChatWorkspace({ providerStatus }) {
       </div>
 
       <div className="border-t border-slate-200 bg-white px-3 py-3 sm:px-5 sm:py-4">
-        {(notice || error) && <p role="status" className="mb-3 rounded-lg bg-amber-50 px-3 py-2 text-xs leading-5 text-amber-900">{notice || 'The AI request failed. Please retry after checking your provider settings.'}</p>}
+
+{(notice || error) && (
+  <div
+    role={error ? 'alert' : 'status'}
+    className={`mb-3 rounded-xl border p-3 ${
+      error
+        ? 'border-rose-200 bg-rose-50'
+        : 'border-amber-200 bg-amber-50'
+    }`}
+  >
+    <p className={`text-sm ${
+      error ? 'text-rose-800' : 'text-amber-900'
+    }`}>
+      {error
+        ? 'The AI response failed or was interrupted.'
+        : notice}
+    </p>
+
+    {error && (
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={retryFailedResponse}
+          disabled={busy}
+          className="min-h-11 rounded-lg bg-rose-700 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-800 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Retry AI Response
+        </button>
+
+        <span className="text-xs text-rose-700">
+          Retries the last response, not the whole conversation.
+        </span>
+      </div>
+    )}
+  </div>
+)}
         <form onSubmit={event => { event.preventDefault(); submit(input); }} className="flex items-end gap-2 sm:gap-3">
           <label htmlFor="chat-input" className="sr-only">Your message</label>
-          <textarea id="chat-input" ref={textareaRef} rows={2} maxLength={2500} value={input} disabled={!providerStatus.configured || busy} onChange={event => setInput(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); submit(input); } }} placeholder="Ask about resumes, interviews or a job search plan…" className="max-h-36 min-h-14 w-full min-w-0 resize-y rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm leading-6 text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white disabled:cursor-not-allowed disabled:bg-slate-100 sm:px-4" />
+          <textarea id="chat-input" ref={textareaRef} rows={2} maxLength={2500} value={input} disabled={!hydrated || !providerStatus.configured || busy} onChange={event => setInput(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); submit(input); } }} placeholder="Ask about resumes, interviews or a job search plan…" className="max-h-36 min-h-14 w-full min-w-0 resize-y rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm leading-6 text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white disabled:cursor-not-allowed disabled:bg-slate-100 sm:px-4" />
           {busy ? <button type="button" onClick={handleStop} className="min-h-12 shrink-0 rounded-xl bg-rose-600 px-4 text-sm font-bold text-white hover:bg-rose-700">■ Stop</button>
             : <button type="submit" disabled={!providerStatus.configured || !input.trim()} className="min-h-12 shrink-0 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300">Send ↗</button>}
         </form>
