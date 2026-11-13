@@ -1,0 +1,61 @@
+
+name: FE-09 Automated Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Component and E2E Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: next-app
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: next-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Vitest component tests
+        run: npx vitest run
+
+      - name: Run existing chat validation tests
+        run: npm run test:chat
+
+      - name: Run job matching tests
+        run: node --test tests/job-match.test.mjs
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright E2E tests
+        run: npx playwright test
+
+      - name: Verify production build
+        run: npm run build
+
+      - name: Upload Playwright reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-reports
+          path: |
+            next-app/playwright-report/
+            next-app/test-results/
+          if-no-files-found: ignore
